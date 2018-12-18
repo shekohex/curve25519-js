@@ -1,0 +1,43 @@
+[package]
+name = "curve25519-js"
+version = "0.1.0"
+authors = ["Shady Khalifa <shekohex@gmail.com>"]
+edition = "2018"
+license = "MIT/Apache-2.0"
+description = """
+Curve25519 is a state-of-the-art Diffie-Hellman function suitable for a wide variety of applications.
+ported from rust-crypto crate
+"""
+readme = "README.md"
+repository = "https://github.com/shekohex/curve25519-js"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["wee_alloc"]
+
+[dependencies]
+cfg-if = "0.1.6"
+wasm-bindgen = "0.2"
+curve25519 = { git = "https://github.com/shekohex/curve25519-rs", branch = "remove-dead-code", default-features = false }
+arrayvec = "0.4.9"
+# The `console_error_panic_hook` crate provides better debugging of panics by
+# logging them with `console.error`. This is great for development, but requires
+# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
+# code size when deploying.
+console_error_panic_hook = { version = "0.1.5", optional = true }
+
+# `wee_alloc` is a tiny allocator for wasm that is only ~1K in code size
+# compared to the default allocator's ~10K. It is slower than the default
+# allocator, however.
+#
+# Unfortunately, `wee_alloc` requires nightly Rust when targeting wasm for now.
+wee_alloc = { version = "0.4.2", optional = true }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.2"
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"
